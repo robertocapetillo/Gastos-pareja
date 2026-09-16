@@ -88,8 +88,8 @@ if datos:
     
     # Cálculos matemáticos
     total_gastado = df["monto"].sum()
-    gastos_persona_a = df[df["pagado_por"] == "Persona A"]["monto"].sum()
-    gastos_persona_b = df[df["pagado_por"] == "Persona B"]["monto"].sum()
+    gastos_persona_a = df[df["pagado_por"] == "Roberto"]["monto"].sum()
+    gastos_persona_b = df[df["pagado_por"] == "Sandy mi amor"]["monto"].sum()
     
     # Suponiendo división 50/50
     mitad = total_gastado / 2
@@ -102,7 +102,7 @@ if datos:
     c2.metric(label="Pagado por Persona B", value=f"${gastos_persona_b:,.2f}")
     
     # Lógica de quién le debe a quién
-    st.subheader("⚖️ Balance de Cuentas")
+    """st.subheader("⚖️ Balance de Cuentas")
     if gastos_persona_a > mitad:
         debe = gastos_persona_a - mitad
         st.info(f"💡 **Persona B** le debe a **Persona A**: `${debe:,.2f}` para quedar 50/50.")
@@ -111,6 +111,7 @@ if datos:
         st.info(f"💡 **Persona A** le debe a **Persona B**: `${debe:,.2f}` para quedar 50/50.")
     else:
         st.success("🎉 ¡Están perfectamente a mano!")
+        """
 else:
     st.info("Aún no hay gastos registrados. ¡Empiecen anotando el primero arriba!")
 
