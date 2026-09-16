@@ -102,16 +102,16 @@ if datos:
     c2.metric(label="Pagado por Persona B", value=f"${gastos_persona_b:,.2f}")
     
     # Lógica de quién le debe a quién
-    """st.subheader("⚖️ Balance de Cuentas")
-    if gastos_persona_a > mitad:
-        debe = gastos_persona_a - mitad
-        st.info(f"💡 **Persona B** le debe a **Persona A**: `${debe:,.2f}` para quedar 50/50.")
-    elif gastos_persona_b > mitad:
-        debe = gastos_persona_b - mitad
-        st.info(f"💡 **Persona A** le debe a **Persona B**: `${debe:,.2f}` para quedar 50/50.")
-    else:
-        st.success("🎉 ¡Están perfectamente a mano!")
-        """
+    #st.subheader("⚖️ Balance de Cuentas")
+    #if gastos_persona_a > mitad:
+    #    debe = gastos_persona_a - mitad
+    #    st.info(f"💡 **Persona B** le debe a **Persona A**: `${debe:,.2f}` para quedar 50/50.")
+    #elif gastos_persona_b > mitad:
+    #    debe = gastos_persona_b - mitad
+    #    st.info(f"💡 **Persona A** le debe a **Persona B**: `${debe:,.2f}` para quedar 50/50.")
+    #else:
+    #    st.success("🎉 ¡Están perfectamente a mano!")
+    
 else:
     st.info("Aún no hay gastos registrados. ¡Empiecen anotando el primero arriba!")
 
