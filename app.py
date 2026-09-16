@@ -16,8 +16,8 @@ import datetime
 import pandas as pd
 
 # 1. Configuración de la conexión a Supabase (¡Cambia esto con tus datos!)
-SUPABASE_URL = "https://ylgnfodvizlncqbqjskd.supabase.co"
-SUPABASE_KEY = "sb_secret_Z5p7zKkppBbcxeagfZOuXQ_9MQCEm_O"
+SUPABASE_URL = st.secrets["SUPABASE_URL"]
+SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
 
 @st.cache_resource
 def init_supabase():
