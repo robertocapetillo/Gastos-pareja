@@ -136,8 +136,21 @@ if datos:
     with pestana_pastel:
         st.markdown(f"**Porcentaje de gastos por categoría en {mes_seleccionado}:**")
         df_categoria = df_filtrado.groupby("categoria")["monto"].sum().reset_index()
-        # Generamos la gráfica de dona interactiva nativa de Streamlit
-        st.logo(image="", icon="🍕")
+        
+        if not df_categoria.empty:
+            import altair as alt
+            
+            # Crear una hermosa gráfica de dona/pastel interactiva que se adapta al celular
+            grafica_pastel = alt.Chart(df_categoria).mark_arc(innerRadius=50).encode(
+                theta=alt.Theta(field="monto", type="quantitative"),
+                color=alt.Color(field="categoria", type="nominal", title="Categoría"),
+                tooltip=[alt.Tooltip(field="categoria", title="Categoría"), 
+                         alt.Tooltip(field="monto", title="Total ($)", format=",.2f")]
+            ).properties(width=300, height=300)
+            
+            st.altair_chart(grafica_pastel, use_container_width=True)
+        else:
+            st.info("No hay datos suficientes para generar la gráfica.")
         
     with pestana_diaria:
         st.markdown("**Gasto acumulado por día:**")
