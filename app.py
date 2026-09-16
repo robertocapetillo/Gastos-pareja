@@ -88,8 +88,8 @@ if datos:
     
     # Cálculos matemáticos
     total_gastado = df["monto"].sum()
-    gastos_persona_a = df[df["pagado_por"] == "Roberto"]["monto"].sum()
-    gastos_persona_b = df[df["pagado_por"] == "Sandy mi amor"]["monto"].sum()
+    gastos_persona_a = df[df["pagado_por"] == "Persona A"]["monto"].sum()
+    gastos_persona_b = df[df["pagado_por"] == "Persona B"]["monto"].sum()
     
     # Suponiendo división 50/50
     mitad = total_gastado / 2
