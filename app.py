@@ -40,9 +40,10 @@ lista_categorias = obtener_categorias()
 
 # 2. SECCIÓN DE CONFIGURACIÓN (Administrar Categorías)
 with st.expander("🛠️ Administrar Categorías de Gastos"):
-    st.markdown("**Agregar nueva categoría:**")
-    nueva_cat = st.text_input("Nombre de la categoría", placeholder="Ej. Mascotas").strip()
-    if st.button("➕ Agregar Categoría"):
+    # --- SUBSECCIÓN: AGREGAR NUEVA ---
+    st.markdown("### ➕ Agregar nueva categoría")
+    nueva_cat = st.text_input("Nombre de la nueva categoría", placeholder="Ej. Mascotas", key="nueva_cat_input").strip()
+    if st.button("Guardar Nueva Categoría", key="btn_agregar_cat"):
         if nueva_cat:
             try:
                 supabase.table("categorias").insert({"nombre": nueva_cat}).execute()
@@ -50,9 +51,56 @@ with st.expander("🛠️ Administrar Categorías de Gastos"):
                 st.cache_data.clear()
                 st.rerun()
             except:
-                st.error("Esta categoría ya existe o hubo un error.")
+                st.error("Esta categoría ya existe o hubo un error al guardarla.")
         else:
             st.warning("Por favor, escribe un nombre para la categoría.")
+
+    st.markdown("---")
+
+    # --- SUBSECCIÓN: EDITAR EXISTENTE ---
+    st.markdown("### ✏️ Editar categoría existente")
+    if lista_categorias:
+        cat_a_editar = st.selectbox("Selecciona la categoría a modificar", lista_categorias, key="select_edit_cat")
+        nuevo_nombre_cat = st.text_input("Nuevo nombre para la categoría", value=cat_a_editar, key="edit_cat_input").strip()
+        
+        if st.button("Actualizar Nombre", key="btn_editar_cat"):
+            if nuevo_nombre_cat and nuevo_nombre_cat != cat_a_editar:
+                try:
+                    # Actualiza en la base de datos basándose en el nombre anterior
+                    supabase.table("categorias").update({"nombre": nuevo_nombre_cat}).eq("nombre", cat_a_editar).execute()
+                    st.success(f"¡Categoría actualizada de '{cat_a_editar}' a '{nuevo_nombre_cat}'!")
+                    st.cache_data.clear()
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Error al actualizar la categoría: {e}")
+            elif nuevo_nombre_cat == cat_a_editar:
+                st.info("El nombre es el mismo. No se realizaron cambios.")
+            else:
+                st.warning("El nombre no puede estar vacío.")
+    else:
+        st.info("No hay categorías disponibles para editar.")
+
+    st.markdown("---")
+
+    # --- SUBSECCIÓN: ELIMINAR ---
+    st.markdown("### 🗑️ Eliminar categorías")
+    if lista_categorias:
+        st.caption("Nota: Eliminar una categoría no borrará los gastos asignados a ella, pero ya no aparecerá como opción.")
+        for cat in lista_categorias:
+            col_nombre, col_accion = st.columns([4, 1])
+            col_nombre.write(f"• {cat}")
+            # Usamos un key único por cada botón dinámico usando el nombre de la categoría
+            if col_accion.button("❌", key=f"btn_del_{cat}", help=f"Eliminar {cat}"):
+                try:
+                    supabase.table("categorias").delete().eq("nombre", cat).execute()
+                    st.success(f"¡Categoría '{cat}' eliminada con éxito!")
+                    st.cache_data.clear()
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"No se pudo eliminar la categoría: {e}")
+    else:
+        st.info("No hay categorías para eliminar.")
+
 
 # 3. FORMULARIO DE REGISTRO DE GASTOS
 st.subheader("📝 Registrar Nuevo Gasto")
